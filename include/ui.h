@@ -18,6 +18,7 @@ class quizWindow : public Gtk::Window
 		Gtk::Box textButtonSplit;
 		Gtk::Grid buttonGrid;
 		Gtk::Label question;
+		Gtk::Label progress;
 		Gtk::Button options[4];
 
 		void handleButton1();
