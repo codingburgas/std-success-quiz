@@ -2,7 +2,10 @@
 #define UI_H
 
 #include <cstdint>
+#include <vector>
 #include <gtkmm.h>
+
+using namespace std;
 
 class mainWindow : public Gtk::Window
 {
@@ -41,10 +44,9 @@ class mainWindow : public Gtk::Window
 		void initQuiz();
 		void showMainMenu();
 	private:
-		uint8_t correctOption;
-		int correct;
 		int id;
 		int current;
 		int total;
+		vector<uint8_t> answerIdsList;
 };
 #endif

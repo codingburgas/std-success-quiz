@@ -1,6 +1,7 @@
 #include "../include/ui.h"
 #include "../include/quiz.h"
 #include "../include/utils.h"
+#include "../include/backend.h"
 #include <cstdint>
 #include <string>
 
@@ -24,7 +25,6 @@ void mainWindow::initQuiz()
 {
 	id = selectionModel->get_selected();
 	current = 0;
-	correct = 0;
 	total = getTotalQuestions(id);
 	set_title(quizStrings->get_string(id));
 	updateContents();
@@ -34,6 +34,7 @@ void mainWindow::initQuiz()
 
 void mainWindow::showMainMenu()
 {
+	saveQuizAnswers(id, answerIdsList);
 	id = 0;
 	set_title("Main Menu");
 	set_child(mainMenuBox);
@@ -48,7 +49,7 @@ void mainWindow::updateContents()
 	}
 	
 	char *questionText, *optionsText[4];
-	correctOption = getQuizQuestionContent(id, current, questionText, optionsText);
+	getQuizQuestionContent(id, current, questionText, optionsText);
 
 	progress.set_label(getProgressString(current, total));
 
@@ -67,7 +68,7 @@ void mainWindow::updateContents()
 void mainWindow::handleInput(uint8_t button)
 {
 	++current;
-	if (button==correctOption) ++correct;
+	answerIdsList.push_back(button);
 	updateContents();
 }
 
@@ -150,5 +151,5 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 
 mainWindow::~mainWindow()
 {
-	cleanUpQuizData();
+
 }
