@@ -1,20 +1,32 @@
 #ifndef UI_H
 #define UI_H
 
-#include <gtkmm/window.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
-#include <gtkmm/grid.h>
-#include <gtkmm/box.h>
 #include <cstdint>
+#include <vector>
+#include <gtkmm.h>
 
-class quizWindow : public Gtk::Window
+using namespace std;
+
+class mainWindow : public Gtk::Window
 {
 	public:
-		quizWindow();
-		~quizWindow();
+		mainWindow();
+		~mainWindow();
 
 	protected:
+		// main menu window
+		Gtk::ListView quizList;
+		Gtk::Button startQuiz;
+		Gtk::Box mainMenuBox;
+		Gtk::ScrolledWindow listScroll;
+		Glib::RefPtr<Gtk::SingleSelection> selectionModel;
+		Glib::RefPtr<Gtk::StringList> quizStrings;
+
+		void onItemSetup(const Glib::RefPtr<Gtk::ListItem>& listItem);
+		void onItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
+
+		// quiz window
+
 		Gtk::Box textButtonSplit;
 		Gtk::Grid buttonGrid;
 		Gtk::Label question;
@@ -29,12 +41,12 @@ class quizWindow : public Gtk::Window
 
 		void updateContents();
 
+		void initQuiz();
+		void showMainMenu();
 	private:
-		uint8_t correctOption;
-		int correct;
 		int id;
 		int current;
 		int total;
+		vector<uint8_t> answerIdsList;
 };
-
 #endif

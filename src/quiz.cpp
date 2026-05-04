@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <cstring>
 
-uint8_t getQuizQuestionContent(int quizId, int questionId, char *&questionText, char *options[4])
+void getQuizQuestionContent(int quizId, int questionId, char *&questionText, char *options[4])
 {
 	// testing
 	questionText = new char[5];
@@ -11,5 +11,4 @@ uint8_t getQuizQuestionContent(int quizId, int questionId, char *&questionText, 
 		options[i] = new char[5];
 		strcpy(options[i], "Test");
 	}
-	return 1;
 }

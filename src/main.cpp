@@ -5,5 +5,5 @@ int main(int argc, char **argv)
 {
 	auto app = Gtk::Application::create("std.success.quiz");
 
-	return app->make_window_and_run<quizWindow>(argc, argv); // TODO replace with mainWindow when created
+	return app->make_window_and_run<mainWindow>(argc, argv);
 }
