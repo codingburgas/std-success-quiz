@@ -1,3 +1,15 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/TH5oISMB)
-# 2526-9-CPP-SprintProject
-Template repository for 9-th grade c++ projects.
+# Std-Success Quiz App
+A simple quiz app
+
+# Dependencies
+## Windows
+You will need dll libraries required by gtkmm, use ldd **executable** in MSYS2 to find out which ones you need
+## Linux
+The required libraries can be downloaded using your package manager, usually gtkmm-4.0 and gtkmm-4.0-dev(el)
+
+# Compilation
+``
+meson setup build
+meson compile -C build
+``  
+The executable will be located in the build folder.
