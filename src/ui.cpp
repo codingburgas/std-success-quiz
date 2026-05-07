@@ -55,13 +55,13 @@ void mainWindow::updateContents()
 
 	// set question
 	question.set_label(questionText);
-	delete questionText;
+	delete[] questionText;
 
 	// set button text
 	for (int i = 0; i<4; ++i)
 	{
 		options[i].set_label(optionsText[i]);
-		delete optionsText[i];
+		delete[] optionsText[i];
 	}
 }
 
