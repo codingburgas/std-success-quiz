@@ -7,5 +7,6 @@
 using namespace std;
 
 void saveQuizAnswers(int id, vector<uint8_t> answers);
+vector<int> getUncompletedTestList();
 
 #endif
