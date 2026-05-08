@@ -17,13 +17,15 @@ class mainWindow : public Gtk::Window
 		// main menu window
 		Gtk::ListView quizList;
 		Gtk::Button startQuiz;
+		Gtk::Entry quizSearchBar;
 		Gtk::Box mainMenuBox;
 		Gtk::ScrolledWindow listScroll;
-		Glib::RefPtr<Gtk::SingleSelection> selectionModel;
+		Glib::RefPtr<Gtk::SingleSelection> quizSelectionModel;
 		Glib::RefPtr<Gtk::StringList> quizStrings;
+		Glib::RefPtr<Gtk::EntryBuffer> quizSearchBuffer;
 
 		void onItemSetup(const Glib::RefPtr<Gtk::ListItem>& listItem);
-		void onItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
+		void onMenuItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
 
 		// quiz window
 
@@ -41,8 +43,35 @@ class mainWindow : public Gtk::Window
 
 		void updateContents();
 
-		void initQuiz();
-		void showMainMenu();
+		// result view (choosing test)
+
+		Gtk::Box resultListButtonBox;
+		Gtk::Button resultBackButton;
+		Gtk::Entry resultSearchBar;
+		Gtk::ListView resultQuizList;
+		Gtk::ScrolledWindow resultListScroll;
+		Gtk::Button selectQuiz;
+		Glib::RefPtr<Gtk::SingleSelection> resultSelectionModel;
+		Glib::RefPtr<Gtk::StringList> resultStrings;
+		Glib::RefPtr<Gtk::EntryBuffer> resultSearchBuffer;
+
+		void onResultItemBind();
+
+		// result view (choosing questions)
+
+		Gtk::Box answerListBackBox;
+		Gtk::Button answerBackButton;
+		Gtk::ListView answerList;
+		Gtk::ScrolledWindow answerScrolledWindow;
+		Glib::RefPtr<Gtk::SingleSelection> answerSelectionModel;
+		Glib::RefPtr<Gtk::StringList> answerStrings;
+
+		void onAnswerItemBind();
+		
+		void openResultMenu(); // main -> result
+		void openAnswerMenu(); // result/quiz -> answer
+		void initQuiz(); // main -> quiz
+		void showMainMenu(); // result/quiz -> main
 	private:
 		int id;
 		int current;
