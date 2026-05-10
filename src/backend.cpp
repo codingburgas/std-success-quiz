@@ -18,6 +18,25 @@ void saveQuizAnswers(int id, vector<uint8_t> answers) {
 	file << endl;
 }
 
+vector<uint8_t> loadQuizAnswers(int id){
+	ifstream file("progress.txt");
+	if (!file.is_open()) return vector<uint8_t>();
+
+	int testId;
+	while (file >> testId) {
+		if (testId == id) {
+			vector<uint8_t> answers;
+			int ans;
+			while (file.peek() != '\n' && file.peek() != EOF && file >> ans) {
+				answers.push_back((uint8_t)ans);
+			}
+			return answers;
+		}
+		file.ignore(10000, '\n');
+	}
+	return vector<uint8_t>();
+}
+
 vector<int> getUncompletedTestList() {
     const char* names[] = getQuizNameList();
     int totalTests = sizeof(names) / sizeof(names[0]);
