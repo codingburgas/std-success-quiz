@@ -2,10 +2,11 @@
 #include <cstdint>
 #include <cstring>
 #include <vector>
+using namespace std;
+
 
 void getQuizQuestionContent(int quizId, int questionId, char *&questionText, char *options[4])
 {
-	// testing
 	questionText = new char[5];
 	strcpy(questionText, "Ques");
 	for (int i = 0; i<4; ++i)
@@ -15,9 +16,9 @@ void getQuizQuestionContent(int quizId, int questionId, char *&questionText, cha
 	}
 }
 
-std::vector<int> searchQuizQuestions(int quizId, const char *text)
+vector<int> searchQuizQuestions(int quizId, const char *text)
 {
-	std::vector<int> matchingQuestions;
+	vector<int> matchingQuestions;
 	if (text==nullptr)
 	{
 		return matchingQuestions;
@@ -42,4 +43,23 @@ std::vector<int> searchQuizQuestions(int quizId, const char *text)
 	}
 
 	return matchingQuestions;
+}
+string testName(int id)
+{
+	return getTestName(id);
+}
+
+string testQuestionName(int id, int index)
+{
+	return getTestQuestion(id, index).text;
+}
+
+array<string, 4> testQuestionOptions(int id, int index)
+{
+	return getTestQuestion(id, index).options;
+}
+
+int testTotal()
+{
+	return getTotalQuestions();
 }

@@ -1,9 +1,10 @@
 #include "../include/backend.h"
-#include "../include/quiz.h"
 #include <fstream>
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <sstream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -59,4 +60,41 @@ vector<int> getUncompletedTestList() {
         }
     }
     return uncompleted;
+}
+
+static vector<Test> g_tests = {
+    {
+        "Safety Basics",
+        {
+            { "What is the first step in safety?", { "Stop", "Think", "Run", "Hide" } },
+            { "Who to call in emergency?", { "Friend", "Supervisor", "Nobody", "Mail" } }
+        }
+    },
+    {
+        "Protocol Quiz",
+        {
+            { "What is protocol A?", { "Option1", "Option2", "Option3", "Option4" } },
+            { "How often to check logs?", { "Daily", "Weekly", "Monthly", "Never" } }
+        }
+    }
+};
+
+string getTestName(int id)
+{
+    if (id < 0 || id >= static_cast<int>(g_tests.size())) return string();
+    return g_tests[id].name;
+}
+
+TestQuestion getTestQuestion(int id, int index)
+{
+    TestQuestion empty;
+    if (id < 0 || id >= static_cast<int>(g_tests.size())) return empty;
+    const auto& qs = g_tests[id].questions;
+    if (index < 0 || index >= static_cast<int>(qs.size())) return empty;
+    return qs[index];
+}
+
+int getTotalQuestions()
+{
+    return static_cast<int>(g_tests.size());
 }
