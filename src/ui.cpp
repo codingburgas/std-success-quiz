@@ -14,10 +14,6 @@ void mainWindow::onItemSetup(const Glib::RefPtr<Gtk::ListItem>& listItem)
 	listItem->set_child(*Gtk::make_managed<Gtk::Label>(""));
 }
 
-void searchText()
-{
-}
-
 void bindWithStrings(const Glib::RefPtr<Gtk::ListItem> listItem, Glib::RefPtr<Gtk::StringList> strings)
 {
 	auto position = listItem->get_position();
@@ -101,7 +97,7 @@ void mainWindow::updateContents()
 
 void mainWindow::searchText()
 {
-	quizStrings = findTextInQuizQuestions(quizSearchBuffer->get_text());
+	quizStrings = findTextInQuizQuestions(quizSearchBuffer->get_text()); // todo implement search
 }
 
 void mainWindow::handleInput(uint8_t button)

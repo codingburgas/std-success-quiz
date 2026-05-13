@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <cstdint>
 using namespace std;
 
 void saveQuizAnswers(int id, vector<uint8_t> answers);
@@ -25,6 +26,7 @@ struct Test
 
 string getTestName(int id);
 TestQuestion getTestQuestion(int id, int index);
-int getTotalQuestions();
+int getTotalQuizes();
+int getTotalQuestions(int quizId);
 
 #endif

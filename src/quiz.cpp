@@ -1,24 +1,14 @@
+#include "../include/backend.h"
 #include "../include/quiz.h"
 #include <cstdint>
 #include <cstring>
 #include <vector>
 using namespace std;
 
-
-void getQuizQuestionContent(int quizId, int questionId, char *&questionText, char *options[4])
-{
-	questionText = new char[5];
-	strcpy(questionText, "Ques");
-	for (int i = 0; i<4; ++i)
-	{
-		options[i] = new char[5];
-		strcpy(options[i], "Test");
-	}
-}
-
 vector<int> searchQuizQuestions(int quizId, const char *text)
 {
 	vector<int> matchingQuestions;
+	string quizText = testName(quizId);
 	if (text==nullptr)
 	{
 		return matchingQuestions;
@@ -26,24 +16,18 @@ vector<int> searchQuizQuestions(int quizId, const char *text)
 
 	for (int questionId = 0; questionId<getTotalQuestions(quizId); ++questionId)
 	{
-		char *questionText = nullptr;
-		char *options[4] = {};
-		getQuizQuestionContent(quizId, questionId, questionText, options);
+		string questionText = testQuestionName(quizId, );
 
-		if (questionText!=nullptr && strstr(questionText, text)!=nullptr)
+		if ((questionText.find(text)!=-1)||(quizText.find(text)!=-1))
 		{
 			matchingQuestions.push_back(questionId);
-		}
-
-		delete[] questionText;
-		for (int i = 0; i<4; ++i)
-		{
-			delete[] options[i];
+			continue;
 		}
 	}
 
 	return matchingQuestions;
 }
+
 string testName(int id)
 {
 	return getTestName(id);
@@ -61,5 +45,5 @@ array<string, 4> testQuestionOptions(int id, int index)
 
 int testTotal()
 {
-	return getTotalQuestions();
+	return getTotalQuizes();
 }

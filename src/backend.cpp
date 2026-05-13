@@ -39,8 +39,7 @@ vector<uint8_t> loadQuizAnswers(int id){
 }
 
 vector<int> getUncompletedTestList() {
-    const char* names[] = getQuizNameList();
-    int totalTests = sizeof(names) / sizeof(names[0]);
+    int totalTests = getTotalQuizes();
     vector<bool> isCompleted(totalTests, false);
     ifstream file("progress.txt");
     if (file.is_open()) {
@@ -94,7 +93,12 @@ TestQuestion getTestQuestion(int id, int index)
     return qs[index];
 }
 
-int getTotalQuestions()
+int getTotalQuizes()
 {
     return static_cast<int>(g_tests.size());
+}
+
+int getTotalQuestions(int quizId)
+{
+	return (int)g_tests[quizId].questions.size();
 }
