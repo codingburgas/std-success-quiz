@@ -11,4 +11,6 @@ string testQuestionName(int id, int index);
 array<string, 4> testQuestionOptions(int id, int index);
 int testTotal();
 
+std::vector<int> searchQuizQuestions(int quizId, const char *text);
+
 #endif

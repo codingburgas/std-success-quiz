@@ -1,10 +1,66 @@
-#include "include/backend.h"
-#include <vector>
+#include "../include/backend.h"
 #include <fstream>
+#include <vector>
+#include <string>
+#include <cstdint>
 #include <sstream>
 #include <unordered_map>
 
 using namespace std;
+
+void saveQuizAnswers(int id, vector<uint8_t> answers) {
+	ofstream file("progress.txt", ios::app);
+	if (!file.is_open()) return;
+
+	file << id;
+	for (int i = 0; i < (int)answers.size(); i++) {
+		file << " " << (int)answers[i];
+	}
+	file << endl;
+}
+
+vector<uint8_t> loadQuizAnswers(int id){
+	ifstream file("progress.txt");
+	if (!file.is_open()) return vector<uint8_t>();
+
+	int testId;
+	while (file >> testId) {
+		if (testId == id) {
+			vector<uint8_t> answers;
+			int ans;
+			while (file.peek() != '\n' && file.peek() != EOF && file >> ans) {
+				answers.push_back((uint8_t)ans);
+			}
+			return answers;
+		}
+		file.ignore(10000, '\n');
+	}
+	return vector<uint8_t>();
+}
+
+vector<int> getUncompletedTestList() {
+    const char* names[] = getQuizNameList();
+    int totalTests = sizeof(names) / sizeof(names[0]);
+    vector<bool> isCompleted(totalTests, false);
+    ifstream file("progress.txt");
+    if (file.is_open()) {
+        int testId;
+        while (file >> testId) {
+            if (testId >= 0 && testId < totalTests) {
+                isCompleted[testId] = true;
+            }
+            file.ignore(10000, '\n');
+        }
+    }
+	
+    vector<int> uncompleted;
+    for (int i = 0; i < totalTests; i++) {
+        if (isCompleted[i] == false) {
+            uncompleted.push_back(i);
+        }
+    }
+    return uncompleted;
+}
 
 static vector<Test> g_tests = {
     {
@@ -41,58 +97,4 @@ TestQuestion getTestQuestion(int id, int index)
 int getTotalQuestions()
 {
     return static_cast<int>(g_tests.size());
-}
-
-static const string progressFile = "quiz_progress.txt";
-
-static unordered_map<int, string> readProgress()
-{
-    unordered_map<int, string> m;
-    ifstream in(progressFile);
-    if (!in.is_open()) return m;
-    string line;
-    while (getline(in, line))
-    {
-        if (line.empty()) continue;
-        auto pos = line.find(':');
-        if (pos == string::npos) continue;
-        int id = stoi(line.substr(0, pos));
-        m[id] = line.substr(pos + 1);
-    }
-    return m;
-}
-
-static void writeProgress(const unordered_map<int, string>& m)
-{
-    ofstream out(progressFile, ios::trunc);
-    for (auto& p : m) out << p.first << ":" << p.second << "\n";
-}
-
-void saveQuizAnswers(int id, const vector<uint8_t>& answers)
-{
-    auto m = readProgress();
-    stringstream ss;
-    for (size_t i = 0; i < answers.size(); ++i)
-    {
-        if (i) ss << ",";
-        ss << static_cast<int>(answers[i]);
-    }
-    m[id] = ss.str();
-    writeProgress(m);
-}
-
-bool loadQuizAnswers(int id, vector<uint8_t>& answers)
-{
-    answers.clear();
-    auto m = readProgress();
-    auto it = m.find(id);
-    if (it == m.end()) return false;
-    string s = it->second;
-    string token;
-    stringstream ss(s);
-    while (getline(ss, token, ',')) {
-        try { answers.push_back(static_cast<uint8_t>(stoi(token))); }
-        catch (...) { answers.push_back(0); }
-    }
-    return true;
 }

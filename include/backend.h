@@ -6,6 +6,10 @@
 #include <array>
 using namespace std;
 
+void saveQuizAnswers(int id, vector<uint8_t> answers);
+vector<uint8_t> loadQuizAnswers(int id);
+vector<int> getUncompletedTestList();
+
 struct TestQuestion
 {
     string text;
@@ -21,10 +25,6 @@ struct Test
 
 string getTestName(int id);
 TestQuestion getTestQuestion(int id, int index);
-int getTotalQuestions(); 
-
-
-void saveQuizAnswers(int id, const vector<uint8_t>& answers);
-bool loadQuizAnswers(int id, vector<uint8_t>& answers);
+int getTotalQuestions();
 
 #endif
