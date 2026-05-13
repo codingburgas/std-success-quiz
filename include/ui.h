@@ -42,6 +42,7 @@ class mainWindow : public Gtk::Window
 		void handleInput(uint8_t button);
 
 		void updateContents();
+		void searchText();
 
 		// result view (choosing test)
 
@@ -55,7 +56,7 @@ class mainWindow : public Gtk::Window
 		Glib::RefPtr<Gtk::StringList> resultStrings;
 		Glib::RefPtr<Gtk::EntryBuffer> resultSearchBuffer;
 
-		void onResultItemBind();
+		void onResultItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
 
 		// result view (choosing questions)
 
@@ -63,10 +64,10 @@ class mainWindow : public Gtk::Window
 		Gtk::Button answerBackButton;
 		Gtk::ListView answerList;
 		Gtk::ScrolledWindow answerScrolledWindow;
-		Glib::RefPtr<Gtk::SingleSelection> answerSelectionModel;
+		Glib::RefPtr<Gtk::NoSelection> answerSelectionModel;
 		Glib::RefPtr<Gtk::StringList> answerStrings;
 
-		void onAnswerItemBind();
+		void onAnswerItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
 		
 		void openResultMenu(); // main -> result
 		void openAnswerMenu(); // result/quiz -> answer

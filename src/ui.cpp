@@ -14,10 +14,14 @@ void mainWindow::onItemSetup(const Glib::RefPtr<Gtk::ListItem>& listItem)
 	listItem->set_child(*Gtk::make_managed<Gtk::Label>(""));
 }
 
-void bindWithStrings(const Glib::RefPtr<Gtk::ListItem> *listItem, Glib::RefPtr<Gtk::StringList> strings)
+void searchText()
 {
-	auto position = listItem.get_position();
-	if (position==GTK_INVALID_POSITION) return;
+}
+
+void bindWithStrings(const Glib::RefPtr<Gtk::ListItem> listItem, Glib::RefPtr<Gtk::StringList> strings)
+{
+	auto position = listItem->get_position();
+	if (position==GTK_INVALID_LIST_POSITION) return;
 	((Gtk::Label*)listItem->get_child())->set_label(strings->get_string(position));
 }
 
@@ -97,7 +101,7 @@ void mainWindow::updateContents()
 
 void mainWindow::searchText()
 {
-	quizStrings = findTextInQuizQuestions(quizSearchBuffer.get_text());
+	quizStrings = findTextInQuizQuestions(quizSearchBuffer->get_text());
 }
 
 void mainWindow::handleInput(uint8_t button)
@@ -127,7 +131,7 @@ void mainWindow::handleButton4()
 	handleInput(3);
 }
 
-mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), resultViewListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back")
+mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back")
 {
 	// MAIN WINDOW
 
@@ -212,28 +216,27 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	resultQuizList.set_model(resultSelectionModel);
 
 	auto resultFactory = Gtk::SignalListItemFactory::create();
-	resultFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onResultItemSetup));
+	resultFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
 	resultFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onResultItemBind));
 	resultQuizList.set_factory(resultFactory);
 
-	resultButtonListBox.append(resultListScroll);
-	resultButtonListBox.append(selectQuiz);
+	resultListButtonBox.append(resultListScroll);
+	resultListButtonBox.append(selectQuiz);
 
 	selectQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
 
 	// results (answers)
 	
-	resultViewListBackBox.append(answerBackButton);
+	answerListBackBox.append(answerBackButton);
 
 	// list
 	
 	answerStrings = Gtk::StringList::create({}); // TODO when backend is ready
 	answerSelectionModel = Gtk::NoSelection::create(answerStrings);
-	answerSelectionModel->set_autoselect(true);
 	answerList.set_model(answerSelectionModel);
 
 	auto answerFactory = Gtk::SignalListItemFactory::create();
-	answerFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onAnswerItemSetup));
+	answerFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
 	answerFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onAnswerItemBind));
 	answerList.set_factory(resultFactory);
 }
