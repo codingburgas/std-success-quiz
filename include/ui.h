@@ -26,6 +26,8 @@ class mainWindow : public Gtk::Window
 
 		void onItemSetup(const Glib::RefPtr<Gtk::ListItem>& listItem);
 		void onMenuItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
+		
+		void updateMainMenuSearch();
 
 		// quiz window
 
@@ -42,7 +44,6 @@ class mainWindow : public Gtk::Window
 		void handleInput(uint8_t button);
 
 		void updateContents();
-		void searchText();
 
 		// result view (choosing test)
 
@@ -57,6 +58,7 @@ class mainWindow : public Gtk::Window
 		Glib::RefPtr<Gtk::EntryBuffer> resultSearchBuffer;
 
 		void onResultItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
+		void updateResultMenuSearch();
 
 		// result view (choosing questions)
 
@@ -73,6 +75,7 @@ class mainWindow : public Gtk::Window
 		void openAnswerMenu(); // result/quiz -> answer
 		void initQuiz(); // main -> quiz
 		void showMainMenu(); // result/quiz -> main
+		void showAnswerMenu(bool afterQuiz);
 	private:
 		int id;
 		int current;

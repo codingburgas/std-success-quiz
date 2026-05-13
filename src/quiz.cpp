@@ -16,7 +16,7 @@ vector<int> searchQuizQuestions(int quizId, const char *text)
 
 	for (int questionId = 0; questionId<getTotalQuestions(quizId); ++questionId)
 	{
-		string questionText = testQuestionName(quizId, );
+		string questionText = testQuestionName(quizId, questionId);
 
 		if ((questionText.find(text)!=-1)||(quizText.find(text)!=-1))
 		{
@@ -26,6 +26,11 @@ vector<int> searchQuizQuestions(int quizId, const char *text)
 	}
 
 	return matchingQuestions;
+}
+
+void saveAnswers(int id, vector<uint8_t> answers)
+{
+	saveQuizAnswers(id, answers);
 }
 
 string testName(int id)
@@ -43,7 +48,17 @@ array<string, 4> testQuestionOptions(int id, int index)
 	return getTestQuestion(id, index).options;
 }
 
+int testQuestionTotal(int id)
+{
+	return getTotalQuestions(id);
+}
+
 int testTotal()
 {
 	return getTotalQuizes();
+}
+
+uint8_t testProgressAnswer(int quizId, int questionId)
+{
+	return loadQuizAnswers(quizId)[questionId];
 }

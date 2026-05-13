@@ -57,8 +57,15 @@ void mainWindow::openResultMenu()
 void mainWindow::openAnswerMenu()
 {
 	id = resultSelectionModel->get_selected();
-	//answerStrings TODO implement strings for answers
-	set_title("Answers"); // TODO change?
+	showAnswerMenu(0);
+}
+
+void mainWindow::showAnswerMenu(bool afterQuiz)
+{
+	answerStrings->splice(0, answerStrings->get_n_items(), {});
+	for (int i = 0; i<testQuestionTotal(id); ++i)
+		answerStrings->append(testQuestionOptions(id, i)[testProgressAnswer(id, i)]);
+	set_title("Result View");
 	set_child(answerListBackBox);
 }
 
@@ -74,31 +81,28 @@ void mainWindow::updateContents()
 {
 	if (total==current)
 	{
-		showMainMenu(); // TODO show result screen
+		saveAnswers(id, answerIdsList);
+		showAnswerMenu(1);
 		return;
 	}
 	
-	char *questionText, *optionsText[4];
-	getQuizQuestionContent(id, current, questionText, optionsText);
+	string questionText;
+	array<string, 4> optionsText;
+	questionText = testQuestionName(id, current);
+	optionsText = testQuestionOptions(id, current);
 
 	progress.set_label(getProgressString(current, total));
 
 	// set question
 	question.set_label(questionText);
-	delete[] questionText;
 
 	// set button text
 	for (int i = 0; i<4; ++i)
-	{
 		options[i].set_label(optionsText[i]);
-		delete[] optionsText[i];
-	}
 }
 
-void mainWindow::searchText()
-{
+// DEPERCATED
 	quizStrings = findTextInQuizQuestions(quizSearchBuffer->get_text()); // todo implement search
-}
 
 void mainWindow::handleInput(uint8_t button)
 {

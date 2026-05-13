@@ -4,13 +4,17 @@
 #include <string>
 #include <array>
 #include <vector>
+#include <cstdint>
 using namespace std;
 
 string testName(int id);
 string testQuestionName(int id, int index);
 array<string, 4> testQuestionOptions(int id, int index);
+int testQuestionTotal(int id);
 int testTotal();
+uint8_t testProgressAnswer(int quizId, int questionId);
 
-std::vector<int> searchQuizQuestions(int quizId, const char *text);
+vector<int> searchQuizQuestions(int quizId, const char *text);
+void saveAnswers(int id, vector<uint8_t> answers);
 
 #endif
