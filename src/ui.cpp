@@ -4,6 +4,7 @@
 #include "../include/backend.h"
 #include <cstdint>
 #include <string>
+#include <algorithm>
 
 #define MARGIN 10
 #define WIDTH 250
@@ -51,6 +52,7 @@ void mainWindow::openResultMenu()
 {
 	id = 0;
 	set_title("Results");
+	updateResultMenuSearch();
 	set_child(resultListButtonBox);
 }
 
@@ -74,6 +76,7 @@ void mainWindow::showMainMenu()
 	saveQuizAnswers(id, answerIdsList);
 	id = 0;
 	set_title("Main Menu");
+	updateMainMenuSearch();
 	set_child(mainMenuBox);
 }
 
@@ -81,7 +84,7 @@ void mainWindow::updateContents()
 {
 	if (total==current)
 	{
-		saveAnswers(id, answerIdsList);
+		testProgressSave(id, answerIdsList);
 		showAnswerMenu(1);
 		return;
 	}
@@ -101,8 +104,24 @@ void mainWindow::updateContents()
 		options[i].set_label(optionsText[i]);
 }
 
-// DEPERCATED
-	quizStrings = findTextInQuizQuestions(quizSearchBuffer->get_text()); // todo implement search
+void mainWindow::updateMainMenuSearch()
+{
+	quizStrings->splice(0, quizStrings->get_n_items(), {});
+	vector<int> uncompletedTests = testProgressUncompleted();
+	for (size_t i = 0; i<uncompletedTests.size(); ++i)
+		if (searchQuizQuestions(uncompletedTests[i], quizSearchBuffer->get_text().c_str()).size()) // TEMP
+			quizStrings->append(testName(uncompletedTests[i]));
+}
+
+void mainWindow::updateResultMenuSearch()
+{
+	resultStrings->splice(0, resultStrings->get_n_items(), {});
+	vector<int> uncompletedTests = testProgressUncompleted();
+	for (int i = 0; i<testTotal(); ++i)
+		if (find(uncompletedTests.begin(), uncompletedTests.end(), i)!=uncompletedTests.end())
+			if (searchQuizQuestions(i, resultSearchBuffer->get_text().c_str()).size())
+				resultStrings->append(testName(i));
+}
 
 void mainWindow::handleInput(uint8_t button)
 {
@@ -150,11 +169,11 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	set_child(mainMenuBox);
 
 	startQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::initQuiz));
-	quizSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::searchText));
+	quizSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::updateMainMenuSearch));
 
 	// list
 	
-	quizStrings = Gtk::StringList::create(getQuizNameList());
+	quizStrings = Gtk::StringList::create({});
 	quizSelectionModel = Gtk::SingleSelection::create(quizStrings);
 	quizSelectionModel->set_autoselect(true);
 	quizList.set_model(quizSelectionModel);
@@ -163,6 +182,8 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	quizFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
 	quizFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onMenuItemBind));	
 	quizList.set_factory(quizFactory);
+
+	updateMainMenuSearch();
 
 	// content
 	set_title("Main Menu");
@@ -224,6 +245,9 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	resultListButtonBox.append(selectQuiz);
 
 	selectQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
+	resultSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::updateResultMenuSearch));
+
+	updateResultMenuSearch();
 
 	// results (answers)
 	

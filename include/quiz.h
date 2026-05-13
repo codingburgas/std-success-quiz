@@ -13,8 +13,9 @@ array<string, 4> testQuestionOptions(int id, int index);
 int testQuestionTotal(int id);
 int testTotal();
 uint8_t testProgressAnswer(int quizId, int questionId);
+vector<int> testProgressUncompleted();
 
 vector<int> searchQuizQuestions(int quizId, const char *text);
-void saveAnswers(int id, vector<uint8_t> answers);
+void testProgressSave(int id, vector<uint8_t> answers);
 
 #endif

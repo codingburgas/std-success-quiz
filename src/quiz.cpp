@@ -28,7 +28,12 @@ vector<int> searchQuizQuestions(int quizId, const char *text)
 	return matchingQuestions;
 }
 
-void saveAnswers(int id, vector<uint8_t> answers)
+vector<int> testProgressUncompleted()
+{
+	return getUncompletedTestList();
+}
+
+void testProgressSave(int id, vector<uint8_t> answers)
 {
 	saveQuizAnswers(id, answers);
 }
