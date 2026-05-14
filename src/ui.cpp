@@ -1,7 +1,6 @@
 #include "../include/ui.h"
 #include "../include/quiz.h"
 #include "../include/utils.h"
-#include "../include/backend.h"
 #include <cstdint>
 #include <string>
 #include <algorithm>
@@ -42,8 +41,8 @@ void mainWindow::initQuiz()
 {
 	id = quizSelectionModel->get_selected();
 	current = 0;
-	total = getTotalQuestions(id);
-	set_title(quizStrings->get_string(id));
+	total = testQuestionTotal(availableQuizes[id]);
+	set_title(quizStrings->get_string(availableQuizes[id]));
 	updateContents();
 
 	set_child(textButtonSplit);
@@ -67,15 +66,14 @@ void mainWindow::openAnswerMenu()
 void mainWindow::showAnswerMenu()
 {
 	answerStrings->splice(0, answerStrings->get_n_items(), {});
-	for (int i = 0; i<testQuestionTotal(id); ++i)
-		answerStrings->append(testQuestionOptions(availableQuizes[id], i)[testProgressAnswer(id, i)]);
+	for (int i = 0; i<testQuestionTotal(availableQuizes[id]); ++i)
+		answerStrings->append(testQuestionOptions(availableQuizes[id], i)[testProgressAnswer(availableQuizes[id], i)]);
 	set_title("Result View");
 	set_child(answerListBackBox);
 }
 
 void mainWindow::showMainMenu()
 {
-	saveQuizAnswers(id, answerIdsList);
 	id = 0;
 	set_title("Main Menu");
 	updateMainMenuSearch();
@@ -86,7 +84,7 @@ void mainWindow::updateContents()
 {
 	if (total==current)
 	{
-		testProgressSave(id, answerIdsList);
+		testProgressSave(availableQuizes[id], answerIdsList);
 		answerIdsList.clear();
 		showAnswerMenu();
 		return;
@@ -94,8 +92,8 @@ void mainWindow::updateContents()
 	
 	string questionText;
 	array<string, 4> optionsText;
-	questionText = testQuestionName(id, current);
-	optionsText = testQuestionOptions(id, current);
+	questionText = testQuestionName(availableQuizes[id], current);
+	optionsText = testQuestionOptions(availableQuizes[id], current);
 
 	progress.set_label(getProgressString(current, total));
 
@@ -270,8 +268,6 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 	selectQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openAnswerMenu));
 	resultSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::updateResultMenuSearch));
 
-	updateResultMenuSearch();
-
 	// results (answers)
 	
 	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, openResultMenu));
@@ -287,7 +283,7 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 	auto answerFactory = Gtk::SignalListItemFactory::create();
 	answerFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
 	answerFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onAnswerItemBind));
-	answerList.set_factory(resultFactory);
+	answerList.set_factory(answerFactory);
 
 	answerScrolledWindow.set_child(answerList);
 	answerScrolledWindow.set_margin(MARGIN);
