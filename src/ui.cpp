@@ -177,7 +177,9 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 
 	quizSearchBar.set_placeholder_text("Search for questions");
 	quizSearchBuffer = quizSearchBar.get_buffer();
+	resultButton.set_margin(MARGIN);
 	mainMenuBox.append(resultButton);
+	quizSearchBar.set_margin(MARGIN);
 	mainMenuBox.append(quizSearchBar);
 	mainMenuBox.append(listScroll);
 	mainMenuBox.append(startQuiz);
@@ -271,7 +273,7 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 
 	// results (answers)
 	
-	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, openResultMenu));
+	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
 	answerBackButton.set_margin(MARGIN);
 	answerListBackBox.append(answerBackButton);
 
