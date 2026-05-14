@@ -17,5 +17,6 @@ vector<int> testProgressUncompleted();
 
 vector<int> searchQuizQuestions(int quizId, const char *text);
 void testProgressSave(int id, vector<uint8_t> answers);
+void testProgressRemove(int quizId);
 
 #endif

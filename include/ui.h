@@ -69,16 +69,19 @@ class mainWindow : public Gtk::Window
 		Gtk::ScrolledWindow answerScrolledWindow;
 		Glib::RefPtr<Gtk::NoSelection> answerSelectionModel;
 		Glib::RefPtr<Gtk::StringList> answerStrings;
+		Gtk::Button restartQuizButton;
 
 		void onAnswerItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
+		void restartQuiz();
 		
 		void openResultMenu(); // main -> result
 		void openAnswerMenu(); // result/quiz -> answer
-		void initQuiz(); // main -> quiz
+		void initQuiz(); // callback to get id
+		void openQuizMenu(); // main -> quiz
 		void showMainMenu(); // result/quiz -> main
 		void showAnswerMenu(); // for saving id
 	private:
-		int id;
+		guint id;
 		int current;
 		int total;
 		vector<uint8_t> answerIdsList;

@@ -41,12 +41,24 @@ void mainWindow::initQuiz()
 {
 	id = quizSelectionModel->get_selected();
 	if (id==GTK_INVALID_LIST_POSITION) return;
+	openQuizMenu();
+}
+
+void mainWindow::openQuizMenu()
+{
 	current = 0;
 	total = testQuestionTotal(availableQuizes[id]);
 	set_title(quizStrings->get_string(availableQuizes[id]));
 	updateContents();
 
 	set_child(textButtonSplit);
+}
+
+void mainWindow::restartQuiz()
+{
+	// remove from save
+	testProgressRemove(availableQuizes[id]);
+	openQuizMenu();
 }
 
 void mainWindow::openResultMenu()
@@ -166,7 +178,7 @@ void mainWindow::handleButton4()
 	handleInput(3);
 }
 
-mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back")
+mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back"), restartQuizButton("Restart quiz")
 {
 	// MAIN WINDOW
 
@@ -292,6 +304,9 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 	answerScrolledWindow.set_margin(MARGIN);
 	answerListBackBox.append(answerScrolledWindow);
 
+	restartQuizButton.set_margin(MARGIN);
+	restartQuizButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::restartQuiz));
+	answerListBackBox.append(restartQuizButton);
 }
 
 mainWindow::~mainWindow()
