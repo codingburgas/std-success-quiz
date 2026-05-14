@@ -64,6 +64,32 @@ vector<int> getUncompletedTestList() {
     return uncompleted;
 }
 
+void removeQuizFromSave(int id) {
+    ifstream inFile("progress.txt");
+    if (!inFile.is_open()) return;
+
+    vector<string> lines;
+    string line;
+    while (getline(inFile, line)) {
+        stringstream ss(line);
+        int testId;
+        if (ss >> testId) {
+            if (testId != id) {
+                lines.push_back(line);
+            }
+        }
+    }
+    inFile.close();
+
+    ofstream outFile("progress.txt");
+    if (!outFile.is_open()) return;
+
+    for (const auto& l : lines) {
+        outFile << l << endl;
+    }
+    outFile.close();
+}
+
 static vector<Test> g_tests = {
     {
         "Safety Basics",
