@@ -77,5 +77,6 @@ int testTotal()
 
 uint8_t testProgressAnswer(int quizId, int questionId)
 {
-	return loadQuizAnswers(quizId)[questionId];
+	vector<uint8_t> answers = loadQuizAnswers(quizId);
+	return answers.size()>questionId?0:answers[questionId];
 }

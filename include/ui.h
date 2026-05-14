@@ -16,6 +16,7 @@ class mainWindow : public Gtk::Window
 	protected:
 		// main menu window
 		Gtk::ListView quizList;
+		Gtk::Button resultButton;
 		Gtk::Button startQuiz;
 		Gtk::Entry quizSearchBar;
 		Gtk::Box mainMenuBox;
@@ -75,11 +76,12 @@ class mainWindow : public Gtk::Window
 		void openAnswerMenu(); // result/quiz -> answer
 		void initQuiz(); // main -> quiz
 		void showMainMenu(); // result/quiz -> main
-		void showAnswerMenu(bool afterQuiz);
+		void showAnswerMenu(); // for saving id
 	private:
 		int id;
 		int current;
 		int total;
 		vector<uint8_t> answerIdsList;
+		vector<int> availableQuizes;
 };
 #endif

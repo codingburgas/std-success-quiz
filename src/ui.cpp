@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 #define MARGIN 10
 #define WIDTH 250
@@ -59,14 +60,15 @@ void mainWindow::openResultMenu()
 void mainWindow::openAnswerMenu()
 {
 	id = resultSelectionModel->get_selected();
-	showAnswerMenu(0);
+	if (id==GTK_INVALID_LIST_POSITION) return;
+	showAnswerMenu();
 }
 
-void mainWindow::showAnswerMenu(bool afterQuiz)
+void mainWindow::showAnswerMenu()
 {
 	answerStrings->splice(0, answerStrings->get_n_items(), {});
 	for (int i = 0; i<testQuestionTotal(id); ++i)
-		answerStrings->append(testQuestionOptions(id, i)[testProgressAnswer(id, i)]);
+		answerStrings->append(testQuestionOptions(availableQuizes[id], i)[testProgressAnswer(id, i)]);
 	set_title("Result View");
 	set_child(answerListBackBox);
 }
@@ -85,7 +87,8 @@ void mainWindow::updateContents()
 	if (total==current)
 	{
 		testProgressSave(id, answerIdsList);
-		showAnswerMenu(1);
+		answerIdsList.clear();
+		showAnswerMenu();
 		return;
 	}
 	
@@ -108,19 +111,33 @@ void mainWindow::updateMainMenuSearch()
 {
 	quizStrings->splice(0, quizStrings->get_n_items(), {});
 	vector<int> uncompletedTests = testProgressUncompleted();
+	availableQuizes.clear();
 	for (size_t i = 0; i<uncompletedTests.size(); ++i)
+	{
 		if (searchQuizQuestions(uncompletedTests[i], quizSearchBuffer->get_text().c_str()).size()) // TEMP
+		{
+			availableQuizes.push_back(i);
 			quizStrings->append(testName(uncompletedTests[i]));
+		}
+	}
 }
 
 void mainWindow::updateResultMenuSearch()
 {
 	resultStrings->splice(0, resultStrings->get_n_items(), {});
 	vector<int> uncompletedTests = testProgressUncompleted();
+	availableQuizes.clear();
 	for (int i = 0; i<testTotal(); ++i)
-		if (find(uncompletedTests.begin(), uncompletedTests.end(), i)!=uncompletedTests.end())
+	{
+		if (find(uncompletedTests.begin(), uncompletedTests.end(), i)==uncompletedTests.end())
+		{
 			if (searchQuizQuestions(i, resultSearchBuffer->get_text().c_str()).size())
+			{
+				availableQuizes.push_back(i);
 				resultStrings->append(testName(i));
+			}
+		}
+	}
 }
 
 void mainWindow::handleInput(uint8_t button)
@@ -150,7 +167,7 @@ void mainWindow::handleButton4()
 	handleInput(3);
 }
 
-mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back")
+mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back")
 {
 	// MAIN WINDOW
 
@@ -161,6 +178,7 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 
 	quizSearchBar.set_placeholder_text("Search for questions");
 	quizSearchBuffer = quizSearchBar.get_buffer();
+	mainMenuBox.append(resultButton);
 	mainMenuBox.append(quizSearchBar);
 	mainMenuBox.append(listScroll);
 	mainMenuBox.append(startQuiz);
@@ -170,6 +188,7 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 
 	startQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::initQuiz));
 	quizSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::updateMainMenuSearch));
+	resultButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
 
 	// list
 	
@@ -217,13 +236,16 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	
 	resultBackButton.set_expand();
 	resultListButtonBox.append(resultBackButton);
+	resultBackButton.set_margin(MARGIN);
 
-	resultSearchBar.set_placeholder_text("Search for questions");
+	resultSearchBar.set_placeholder_text("Search");
 	resultSearchBuffer = resultSearchBar.get_buffer();
 	resultSearchBar.set_expand();
+	resultSearchBar.set_margin(MARGIN);
 	resultListButtonBox.append(resultSearchBar);
 
 	selectQuiz.set_expand();
+	selectQuiz.set_margin(MARGIN);
 	
 	resultListScroll.set_expand();
 	resultListScroll.set_margin(MARGIN);
@@ -231,7 +253,7 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 
 	// list
 
-	resultStrings = Gtk::StringList::create({}); // TODO implement for only completed tests
+	resultStrings = Gtk::StringList::create({});
 	resultSelectionModel = Gtk::SingleSelection::create(resultStrings);
 	resultSelectionModel->set_autoselect(true);
 	resultQuizList.set_model(resultSelectionModel);
@@ -244,18 +266,21 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	resultListButtonBox.append(resultListScroll);
 	resultListButtonBox.append(selectQuiz);
 
-	selectQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
+	resultBackButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::showMainMenu));
+	selectQuiz.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openAnswerMenu));
 	resultSearchBar.signal_changed().connect(sigc::mem_fun(*this, &mainWindow::updateResultMenuSearch));
 
 	updateResultMenuSearch();
 
 	// results (answers)
 	
+	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, openResultMenu));
+	answerBackButton.set_margin(MARGIN);
 	answerListBackBox.append(answerBackButton);
 
 	// list
 	
-	answerStrings = Gtk::StringList::create({}); // TODO when backend is ready
+	answerStrings = Gtk::StringList::create({});
 	answerSelectionModel = Gtk::NoSelection::create(answerStrings);
 	answerList.set_model(answerSelectionModel);
 
@@ -263,6 +288,11 @@ mainWindow::mainWindow() : startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation
 	answerFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
 	answerFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onAnswerItemBind));
 	answerList.set_factory(resultFactory);
+
+	answerScrolledWindow.set_child(answerList);
+	answerScrolledWindow.set_margin(MARGIN);
+	answerListBackBox.append(answerScrolledWindow);
+
 }
 
 mainWindow::~mainWindow()

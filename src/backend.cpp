@@ -17,6 +17,7 @@ void saveQuizAnswers(int id, vector<uint8_t> answers) {
 		file << " " << (int)answers[i];
 	}
 	file << endl;
+	file.close();
 }
 
 vector<uint8_t> loadQuizAnswers(int id){
@@ -31,10 +32,12 @@ vector<uint8_t> loadQuizAnswers(int id){
 			while (file.peek() != '\n' && file.peek() != EOF && file >> ans) {
 				answers.push_back((uint8_t)ans);
 			}
+			file.close();
 			return answers;
 		}
 		file.ignore(10000, '\n');
 	}
+	file.close();
 	return vector<uint8_t>();
 }
 
