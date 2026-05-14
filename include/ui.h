@@ -64,13 +64,18 @@ class mainWindow : public Gtk::Window
 		// result view (choosing questions)
 
 		Gtk::Box answerListBackBox;
+		Gtk::Box questionAnswerBox;
 		Gtk::Button answerBackButton;
+		Gtk::ListView questionList;
 		Gtk::ListView answerList;
-		Gtk::ScrolledWindow answerScrolledWindow;
+		Gtk::ScrolledWindow questionAnswerScrolledWindow;
+		Glib::RefPtr<Gtk::NoSelection> questionSelectionModel;
 		Glib::RefPtr<Gtk::NoSelection> answerSelectionModel;
+		Glib::RefPtr<Gtk::StringList> questionStrings;
 		Glib::RefPtr<Gtk::StringList> answerStrings;
 		Gtk::Button restartQuizButton;
 
+		void onQuestionItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
 		void onAnswerItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem);
 		void restartQuiz();
 		

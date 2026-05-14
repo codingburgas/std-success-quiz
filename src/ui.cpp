@@ -32,6 +32,11 @@ void mainWindow::onResultItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem)
 	bindWithStrings(listItem, resultStrings);
 }
 
+void mainWindow::onQuestionItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem)
+{
+	bindWithStrings(listItem, questionStrings);
+}
+
 void mainWindow::onAnswerItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem)
 {
 	bindWithStrings(listItem, answerStrings);
@@ -56,7 +61,6 @@ void mainWindow::openQuizMenu()
 
 void mainWindow::restartQuiz()
 {
-	// remove from save
 	testProgressRemove(availableQuizes[id]);
 	openQuizMenu();
 }
@@ -78,9 +82,13 @@ void mainWindow::openAnswerMenu()
 
 void mainWindow::showAnswerMenu()
 {
+	questionStrings->splice(0, questionStrings->get_n_items(), {});
 	answerStrings->splice(0, answerStrings->get_n_items(), {});
 	for (int i = 0; i<testQuestionTotal(availableQuizes[id]); ++i)
+	{
+		questionStrings->append(testQuestionName(availableQuizes[id], i));
 		answerStrings->append(testQuestionOptions(availableQuizes[id], i)[testProgressAnswer(availableQuizes[id], i)]);
+	}
 	set_title("Result View");
 	set_child(answerListBackBox);
 }
@@ -178,7 +186,7 @@ void mainWindow::handleButton4()
 	handleInput(3);
 }
 
-mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), answerBackButton("Back"), restartQuizButton("Restart quiz")
+mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz"), mainMenuBox(Gtk::Orientation::VERTICAL, 5), textButtonSplit(Gtk::Orientation::VERTICAL, 5), resultListButtonBox(Gtk::Orientation::VERTICAL, 5), resultBackButton("Back"), selectQuiz("View answers"), answerListBackBox(Gtk::Orientation::VERTICAL, 5), questionAnswerBox(Gtk::Orientation::HORIZONTAL, 5), answerBackButton("Back"), restartQuizButton("Restart quiz")
 {
 	// MAIN WINDOW
 
@@ -226,7 +234,9 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 	// layout
 	textButtonSplit.append(progress);
 	progress.set_margin(MARGIN);
+	progress.set_expand();
 	textButtonSplit.append(question);
+	question.set_expand();
 	question.set_margin(MARGIN);
 	textButtonSplit.append(buttonGrid);
 	for (int i = 0; i<4; ++i)
@@ -285,11 +295,21 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 
 	// results (answers)
 	
-	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
 	answerBackButton.set_margin(MARGIN);
+	answerBackButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::openResultMenu));
+	answerBackButton.set_expand();
 	answerListBackBox.append(answerBackButton);
 
 	// list
+
+	questionStrings = Gtk::StringList::create({});
+	questionSelectionModel = Gtk::NoSelection::create(questionStrings);
+	questionList.set_model(questionSelectionModel);
+
+	auto questionFactory = Gtk::SignalListItemFactory::create();
+	questionFactory->signal_setup().connect(sigc::mem_fun(*this, &mainWindow::onItemSetup));
+	questionFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onQuestionItemBind));
+	questionList.set_factory(questionFactory);
 	
 	answerStrings = Gtk::StringList::create({});
 	answerSelectionModel = Gtk::NoSelection::create(answerStrings);
@@ -300,11 +320,16 @@ mainWindow::mainWindow() : resultButton("View results"), startQuiz("Start quiz")
 	answerFactory->signal_bind().connect(sigc::mem_fun(*this, &mainWindow::onAnswerItemBind));
 	answerList.set_factory(answerFactory);
 
-	answerScrolledWindow.set_child(answerList);
-	answerScrolledWindow.set_margin(MARGIN);
-	answerListBackBox.append(answerScrolledWindow);
+	questionAnswerBox.append(questionList);
+	questionAnswerBox.append(answerList);
+
+	questionAnswerScrolledWindow.set_child(questionAnswerBox);
+	questionAnswerScrolledWindow.set_margin(MARGIN);
+	questionAnswerScrolledWindow.set_expand();
+	answerListBackBox.append(questionAnswerScrolledWindow);
 
 	restartQuizButton.set_margin(MARGIN);
+	restartQuizButton.set_expand();
 	restartQuizButton.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::restartQuiz));
 	answerListBackBox.append(restartQuizButton);
 }
