@@ -40,6 +40,7 @@ void mainWindow::onAnswerItemBind(const Glib::RefPtr<Gtk::ListItem>& listItem)
 void mainWindow::initQuiz()
 {
 	id = quizSelectionModel->get_selected();
+	if (id==GTK_INVALID_LIST_POSITION) return;
 	current = 0;
 	total = testQuestionTotal(availableQuizes[id]);
 	set_title(quizStrings->get_string(availableQuizes[id]));
