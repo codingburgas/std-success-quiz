@@ -102,6 +102,18 @@ static vector<Test> g_tests = {
             { "What is the safest way to lift heavy objects?", { "Use proper posture", "Twist your back", "Lift quickly", "Use one hand" } },
             { "What should you wear in hazardous areas?", { "Protective gear", "Sandals", "Loose clothes", "No equipment" } }
         }
+    },
+    {
+        "Protocol Quiz",
+        {
+            { "What is the purpose of protocol A?", { "Standardize procedures", "Increase confusion", "Replace employees", "Avoid communication" } },
+            { "How often should logs be checked?", { "Daily", "Yearly", "Never", "Only weekends" } },
+            { "Why are protocols important?", { "They ensure consistency", "They waste time", "They reduce teamwork", "They replace managers" } },
+            { "Who approves protocol updates?", { "Management", "Customers", "Visitors", "Nobody" } },
+            { "What should be documented?", { "Important actions", "Personal opinions", "Random thoughts", "Nothing" } },
+            { "What happens if protocols are ignored?", { "Risks increase", "Everything improves", "Nothing changes", "Work becomes faster" } },
+            { "Where are protocols usually stored?", { "Company system", "Trash bin", "Personal notebook only", "Nowhere" } }
+        }
     }
 };
 
