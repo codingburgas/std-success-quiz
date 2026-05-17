@@ -186,6 +186,18 @@ static vector<Test> g_tests = {
             { "What should be done with batteries?", { "Dispose properly", "Throw anywhere", "Burn them", "Store in food areas" } },
             { "Why conserve water?", { "Protect resources", "Increase waste", "Flood buildings", "Damage systems" } }
         }
+    },
+    {
+        "Customer Service",
+        {
+            { "How should customers be treated?", { "Respectfully", "Rudely", "Ignored", "Aggressively" } },
+            { "What is good communication?", { "Clear and polite", "Confusing and loud", "Silent treatment", "Random answers" } },
+            { "Why listen to customers?", { "Understand needs", "Waste time", "Avoid solutions", "Increase problems" } },
+            { "How should complaints be handled?", { "Professionally", "Ignored", "Mocked", "Deleted immediately" } },
+            { "What builds customer trust?", { "Honesty", "False promises", "Rudeness", "Delays" } },
+            { "Why is patience important?", { "Improves interactions", "Creates conflict", "Reduces quality", "Slows systems" } },
+            { "What should employees provide?", { "Helpful support", "Arguments", "Misinformation", "No response" } }
+        }
     }
 };
 
