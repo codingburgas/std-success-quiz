@@ -114,6 +114,18 @@ static vector<Test> g_tests = {
             { "What happens if protocols are ignored?", { "Risks increase", "Everything improves", "Nothing changes", "Work becomes faster" } },
             { "Where are protocols usually stored?", { "Company system", "Trash bin", "Personal notebook only", "Nowhere" } }
         }
+    },
+    {
+        "Cyber Security",
+        {
+            { "What is a strong password?", { "Long and unique", "123456", "password", "Same for all accounts" } },
+            { "What should you do with suspicious emails?", { "Report them", "Open attachments", "Reply immediately", "Forward everywhere" } },
+            { "What is phishing?", { "A scam to steal data", "A backup method", "A coding language", "A firewall" } },
+            { "Why use two-factor authentication?", { "Extra security", "Faster login", "Less privacy", "To disable passwords" } },
+            { "What should antivirus software do?", { "Protect systems", "Delete hardware", "Slow internet", "Replace users" } },
+            { "What is malware?", { "Malicious software", "A monitor type", "Office equipment", "A protocol" } },
+            { "How often should software be updated?", { "Regularly", "Never", "Every 10 years", "Only after attacks" } }
+        }
     }
 };
 
