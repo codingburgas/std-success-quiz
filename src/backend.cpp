@@ -150,6 +150,18 @@ static vector<Test> g_tests = {
             { "What is a browser used for?", { "Access websites", "Edit videos", "Build hardware", "Print documents" } },
             { "Which is a common file extension?", { ".txt", ".chair", ".wall", ".desk" } }
         }
+    },
+    {
+        "Networking Fundamentals",
+        {
+            { "What does LAN mean?", { "Local Area Network", "Long Access Node", "Light Array Network", "Logical Access Network" } },
+            { "What device connects networks?", { "Router", "Printer", "Scanner", "Speaker" } },
+            { "What is an IP address?", { "Network identifier", "Password", "Protocol cable", "Antivirus" } },
+            { "What does Wi-Fi provide?", { "Wireless connection", "Power supply", "Data storage", "Cooling" } },
+            { "What is a firewall?", { "Security system", "Office wall", "Cooling device", "Printer software" } },
+            { "What does download mean?", { "Receive data", "Delete files", "Print documents", "Restart computer" } },
+            { "What is bandwidth?", { "Data transfer capacity", "Monitor size", "Battery power", "CPU speed" } }
+        }
     }
 };
 
