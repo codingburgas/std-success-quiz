@@ -126,6 +126,18 @@ static vector<Test> g_tests = {
             { "What is malware?", { "Malicious software", "A monitor type", "Office equipment", "A protocol" } },
             { "How often should software be updated?", { "Regularly", "Never", "Every 10 years", "Only after attacks" } }
         }
+    },
+    {
+        "Office Rules",
+        {
+            { "What time should employees arrive?", { "On time", "Whenever they want", "At midnight", "Only afternoons" } },
+            { "Why is teamwork important?", { "Improves productivity", "Creates confusion", "Avoids communication", "Reduces quality" } },
+            { "What should employees respect?", { "Company policies", "No rules", "Only personal opinions", "Random decisions" } },
+            { "What is appropriate office behavior?", { "Professional conduct", "Shouting", "Ignoring colleagues", "Breaking equipment" } },
+            { "How should conflicts be handled?", { "Calm discussion", "Fighting", "Ignoring forever", "Public arguments" } },
+            { "Why keep the workspace clean?", { "Safety and organization", "Decoration only", "No reason", "To waste time" } },
+            { "Who should access confidential data?", { "Authorized staff", "Everyone", "Visitors", "Competitors" } }
+        }
     }
 };
 
