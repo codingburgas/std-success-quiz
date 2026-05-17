@@ -162,6 +162,18 @@ static vector<Test> g_tests = {
             { "What does download mean?", { "Receive data", "Delete files", "Print documents", "Restart computer" } },
             { "What is bandwidth?", { "Data transfer capacity", "Monitor size", "Battery power", "CPU speed" } }
         }
+    },
+    {
+        "First Aid",
+        {
+            { "What is the emergency number in Europe?", { "112", "9999", "411", "123" } },
+            { "What should you do first in an emergency?", { "Stay calm", "Panic", "Run away", "Ignore it" } },
+            { "What helps stop bleeding?", { "Apply pressure", "Drink water", "Run", "Sleep" } },
+            { "Why is CPR important?", { "Can save lives", "Improves internet", "Repairs bones instantly", "Cools the body" } },
+            { "What should you do for burns?", { "Cool with water", "Apply ice directly", "Ignore them", "Cover with dirt" } },
+            { "Who should perform medical procedures?", { "Trained people", "Anyone randomly", "Children", "Visitors" } },
+            { "Why use a first aid kit?", { "Provide basic treatment", "Decoration", "Store snacks", "Charge devices" } }
+        }
     }
 };
 
