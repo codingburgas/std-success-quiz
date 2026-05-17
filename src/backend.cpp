@@ -198,6 +198,18 @@ static vector<Test> g_tests = {
             { "Why is patience important?", { "Improves interactions", "Creates conflict", "Reduces quality", "Slows systems" } },
             { "What should employees provide?", { "Helpful support", "Arguments", "Misinformation", "No response" } }
         }
+    },
+    {
+        "General Knowledge",
+        {
+            { "What planet is known as the Red Planet?", { "Mars", "Venus", "Earth", "Jupiter" } },
+            { "How many continents are there?", { "7", "5", "9", "12" } },
+            { "What is H2O commonly called?", { "Water", "Oxygen", "Hydrogen", "Salt" } },
+            { "Who invented the telephone?", { "Alexander Graham Bell", "Newton", "Einstein", "Tesla" } },
+            { "What is the capital of France?", { "Paris", "Berlin", "Madrid", "Rome" } },
+            { "What gas do plants absorb?", { "Carbon dioxide", "Oxygen", "Helium", "Nitrogen" } },
+            { "Which ocean is the largest?", { "Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean" } }
+        }
     }
 };
 
