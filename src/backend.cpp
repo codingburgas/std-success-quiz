@@ -138,6 +138,18 @@ static vector<Test> g_tests = {
             { "Why keep the workspace clean?", { "Safety and organization", "Decoration only", "No reason", "To waste time" } },
             { "Who should access confidential data?", { "Authorized staff", "Everyone", "Visitors", "Competitors" } }
         }
+    },
+    {
+        "Computer Basics",
+        {
+            { "What does CPU stand for?", { "Central Processing Unit", "Computer Power Utility", "Central Program Usage", "Control Processing User" } },
+            { "What device stores files permanently?", { "SSD", "RAM", "CPU", "GPU" } },
+            { "What is an operating system?", { "System software", "A browser", "An antivirus", "A monitor" } },
+            { "Which is an input device?", { "Keyboard", "Monitor", "Speaker", "Projector" } },
+            { "What does RAM do?", { "Temporary memory", "Permanent storage", "Internet access", "Cooling" } },
+            { "What is a browser used for?", { "Access websites", "Edit videos", "Build hardware", "Print documents" } },
+            { "Which is a common file extension?", { ".txt", ".chair", ".wall", ".desk" } }
+        }
     }
 };
 
