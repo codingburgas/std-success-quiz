@@ -174,6 +174,18 @@ static vector<Test> g_tests = {
             { "Who should perform medical procedures?", { "Trained people", "Anyone randomly", "Children", "Visitors" } },
             { "Why use a first aid kit?", { "Provide basic treatment", "Decoration", "Store snacks", "Charge devices" } }
         }
+    },
+    {
+        "Environmental Awareness",
+        {
+            { "Why recycle materials?", { "Reduce waste", "Increase pollution", "Waste energy", "Destroy resources" } },
+            { "What saves electricity?", { "Turning off unused devices", "Leaving lights on", "Overheating systems", "Using broken equipment" } },
+            { "What is renewable energy?", { "Energy from natural sources", "Energy from trash only", "Expired batteries", "Nuclear waste" } },
+            { "Why reduce plastic use?", { "Protect environment", "Increase costs", "Waste materials", "Create pollution" } },
+            { "What pollutes air?", { "Vehicle emissions", "Trees", "Clean water", "Solar panels" } },
+            { "What should be done with batteries?", { "Dispose properly", "Throw anywhere", "Burn them", "Store in food areas" } },
+            { "Why conserve water?", { "Protect resources", "Increase waste", "Flood buildings", "Damage systems" } }
+        }
     }
 };
 
