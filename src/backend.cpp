@@ -94,15 +94,13 @@ static vector<Test> g_tests = {
     {
         "Safety Basics",
         {
-            { "What is the first step in safety?", { "Stop", "Think", "Run", "Hide" } },
-            { "Who to call in emergency?", { "Friend", "Supervisor", "Nobody", "Mail" } }
-        }
-    },
-    {
-        "Protocol Quiz",
-        {
-            { "What is protocol A?", { "Option1", "Option2", "Option3", "Option4" } },
-            { "How often to check logs?", { "Daily", "Weekly", "Monthly", "Never" } }
+            { "What should you do before starting work?", { "Check equipment", "Ignore instructions", "Run immediately", "Leave the area" } },
+            { "Who should you report hazards to?", { "Supervisor", "Random visitor", "Nobody", "Friends" } },
+            { "What does PPE stand for?", { "Personal Protective Equipment", "Public Protection Event", "Private Policy Equipment", "Power Protection Entry" } },
+            { "What should you do during a fire alarm?", { "Evacuate calmly", "Hide", "Ignore it", "Keep working" } },
+            { "Why are safety signs important?", { "They warn about dangers", "They decorate walls", "They slow work", "They replace training" } },
+            { "What is the safest way to lift heavy objects?", { "Use proper posture", "Twist your back", "Lift quickly", "Use one hand" } },
+            { "What should you wear in hazardous areas?", { "Protective gear", "Sandals", "Loose clothes", "No equipment" } }
         }
     }
 };
